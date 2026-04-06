@@ -233,11 +233,15 @@ body{font-family:var(--font);background:var(--bg-deep);color:var(--white);min-he
     <div class="settings-opt" id="opt-waze" onclick="setNavApp('waze')">
       <span>🚗 Waze</span><span class="check">✓</span>
     </div>
-    <div class="settings-divider"><span>SAVED STOPS</span></div>
+    <div class="settings-title" style="margin-top:20px">SAVED STOPS</div>
     <div class="settings-opt" id="favFilterOpt" onclick="toggleFavFilter()">
-      <span>★ Show Saved Stops Only</span><span class="check">✓</span>
+      <span>⭐️ Show Saved Stops Only</span><span class="check">✓</span>
     </div>
-    <button class="settings-clear" id="clearSavedBtn" onclick="clearSaved()">
+    <div class="settings-title" style="margin-top:20px">MAP OPTIONS</div>
+    <div class="settings-opt" id="hideGasOpt" onclick="toggleHideGas()">
+      <span>⛽️ Hide Gas Stations</span><span class="check">✓</span>
+    </div>
+    <button class="settings-clear" id="clearSavedBtn" onclick="clearSaved()" style="margin-top:20px">
       <span id="clearSavedLabel">🗑️ Clear All Saved Stops</span><span id="clearSavedHint" style="font-size:11px;opacity:.7"></span>
     </button>
   </div>
@@ -328,12 +332,12 @@ const POIS=[
   {id:"old-sacramento",name:"Old Sacramento Waterfront",tagline:"Gold Rush history meets the Sacramento River",town:"Sacramento",lat:38.583,lng:-121.505,side:"west",tags:["historic","food","kids","iconic"],kid:true,pet:true,ada:true,rv:false,note:"28 acres of Gold Rush-era buildings, wooden boardwalks, and riverfront dining right off I-5. The California State Railroad Museum alone is worth the stop. Give it 90 minutes minimum.",cell:"good"},
   {id:"oz-korean-bbq",name:"Oz Korean BBQ",tagline:"All-you-can-eat Korean BBQ in suburban Sacramento",town:"Elk Grove",lat:38.407,lng:-121.444,side:"east",tags:["food","hidden-gem","kids"],kid:true,pet:false,ada:true,rv:false,note:"One of Sacramento's top-rated Korean BBQs, and a legitimately great stop if you're tired of truck stop burritos. All-you-can-eat format, family-friendly, and a complete surprise this close to I-5.",cell:"good"},
   // === LOVE'S TRAVEL STOPS ===
-  {id:"loves-corning",name:"Love's Travel Stop — Corning",tagline:"Clean, fast, and fueled up in olive country",town:"Corning",lat:39.930,lng:-122.183,side:"east",tags:["clean-restrooms","showers","fuel"],kid:true,pet:true,ada:true,rv:true,note:"2120 South Ave at I-5 Exit 630. Love's flagship amenities: certified clean restrooms, showers, Subway, and truck parking. In the heart of olive country right near The Olive Pit.",cell:"good"},
-  {id:"loves-williams",name:"Love's Travel Stop — Williams",tagline:"Midpoint fuel and a clean break in the Sacramento Valley",town:"Williams",lat:39.153,lng:-122.135,side:"east",tags:["clean-restrooms","showers","fuel"],kid:true,pet:true,ada:true,rv:true,note:"100 Marguerite St at I-5 Exit 578. Williams sits at the crossroads of I-5 and Hwy 20. Chester's Chicken, Godfather's Pizza, an IHOP Express, showers, and a dog walk area.",cell:"good"},
-  {id:"loves-santa-nella",name:"Love's Travel Stop — Santa Nella",tagline:"Big rig haven next to Pea Soup Andersens",town:"Santa Nella",lat:37.092,lng:-121.014,side:"east",tags:["clean-restrooms","showers","fuel"],kid:true,pet:true,ada:true,rv:true,note:"29025 West Plaza Dr at Exit 407, right next to the Pea Soup Andersens cluster. 85 truck spaces, 8 DEF lanes, and a full food court. The I-5 midpoint fuel stop for California road trippers.",cell:"good"},
-  {id:"loves-lodi",name:"Love's Travel Stop — Lodi",tagline:"90 truck spots and a fast exit off I-5",town:"Lodi",lat:38.113,lng:-121.420,side:"east",tags:["clean-restrooms","showers","fuel"],kid:true,pet:true,ada:true,rv:true,note:"15250 N Thornton Rd at Exit 485. One of the larger Love's on the corridor with 90 truck spaces. Clean showers, DEF lanes, and fast food. Good stop between Sacramento and Stockton.",cell:"good"},
-  {id:"loves-patterson",name:"Love's Travel Stop — Patterson",tagline:"The reliable fuel stop at Exit 434",town:"Patterson",lat:37.472,lng:-121.138,side:"east",tags:["clean-restrooms","showers","fuel"],kid:true,pet:true,ada:true,rv:true,note:"55 Rogers Road at Exit 434. A solid mid-valley stop between Stockton and Santa Nella. Full Love's amenities: showers, clean restrooms, and fast food in the flat heart of the San Joaquin.",cell:"good"},
-  {id:"loves-lost-hills",name:"Love's Travel Stop — Lost Hills",tagline:"The last major stop before the Grapevine",town:"Lost Hills",lat:35.614,lng:-119.700,side:"east",tags:["clean-restrooms","showers","fuel"],kid:true,pet:true,ada:true,rv:true,note:"21948 Highway 46 at Exit 278. If you're heading south, this is your last real stop before the Grapevine climb. 75 truck spaces, showers, and cheap fuel in the middle of the oil fields.",cell:"good"},
+  {id:"loves-corning",name:"Love's Travel Stop",tagline:"Clean, fast, and fueled up in olive country",town:"Corning",lat:39.930,lng:-122.183,side:"east",tags:["clean-restrooms","showers","fuel"],kid:true,pet:true,ada:true,rv:true,note:"2120 South Ave at I-5 Exit 630. Love's flagship amenities: certified clean restrooms, showers, Subway, and truck parking. In the heart of olive country right near The Olive Pit.",cell:"good"},
+  {id:"loves-williams",name:"Love's Travel Stop",tagline:"Midpoint fuel and a clean break in the Sacramento Valley",town:"Williams",lat:39.153,lng:-122.135,side:"east",tags:["clean-restrooms","showers","fuel"],kid:true,pet:true,ada:true,rv:true,note:"100 Marguerite St at I-5 Exit 578. Williams sits at the crossroads of I-5 and Hwy 20. Chester's Chicken, Godfather's Pizza, an IHOP Express, showers, and a dog walk area.",cell:"good"},
+  {id:"loves-santa-nella",name:"Love's Travel Stop",tagline:"Big rig haven next to Pea Soup Andersens",town:"Santa Nella",lat:37.092,lng:-121.014,side:"east",tags:["clean-restrooms","showers","fuel"],kid:true,pet:true,ada:true,rv:true,note:"29025 West Plaza Dr at Exit 407, right next to the Pea Soup Andersens cluster. 85 truck spaces, 8 DEF lanes, and a full food court. The I-5 midpoint fuel stop for California road trippers.",cell:"good"},
+  {id:"loves-lodi",name:"Love's Travel Stop",tagline:"90 truck spots and a fast exit off I-5",town:"Lodi",lat:38.113,lng:-121.420,side:"east",tags:["clean-restrooms","showers","fuel"],kid:true,pet:true,ada:true,rv:true,note:"15250 N Thornton Rd at Exit 485. One of the larger Love's on the corridor with 90 truck spaces. Clean showers, DEF lanes, and fast food. Good stop between Sacramento and Stockton.",cell:"good"},
+  {id:"loves-patterson",name:"Love's Travel Stop",tagline:"The reliable fuel stop at Exit 434",town:"Patterson",lat:37.472,lng:-121.138,side:"east",tags:["clean-restrooms","showers","fuel"],kid:true,pet:true,ada:true,rv:true,note:"55 Rogers Road at Exit 434. A solid mid-valley stop between Stockton and Santa Nella. Full Love's amenities: showers, clean restrooms, and fast food in the flat heart of the San Joaquin.",cell:"good"},
+  {id:"loves-lost-hills",name:"Love's Travel Stop",tagline:"The last major stop before the Grapevine",town:"Lost Hills",lat:35.614,lng:-119.700,side:"east",tags:["clean-restrooms","showers","fuel"],kid:true,pet:true,ada:true,rv:true,note:"21948 Highway 46 at Exit 278. If you're heading south, this is your last real stop before the Grapevine climb. 75 truck spaces, showers, and cheap fuel in the middle of the oil fields.",cell:"good"},
   // === SAN JOAQUIN VALLEY ===
   {id:"titas-pupuseria",name:"Tita's Pupusería Lonchera",tagline:"The best $5 meal on all of I-5",town:"Buttonwillow",lat:35.394,lng:-119.395,side:"east",tags:["food","hidden-gem"],kid:true,pet:false,ada:false,rv:false,note:"A food truck off the freeway in Buttonwillow serving Salvadoran pupusas that will haunt you for weeks. 20645 Tracy Ave. Cash or card. Go before the line hits. One of the true hidden gems on I-5.",cell:"good"},
   // === LA AREA — NORTH ===
@@ -354,17 +358,17 @@ const POIS=[
   {id:"san-diego-zoo",name:"San Diego Zoo",tagline:"Consistently one of the best zoos in the world",town:"San Diego",lat:32.735,lng:-117.149,side:"east",tags:["kids","iconic","scenic","detour"],kid:true,pet:false,ada:true,rv:false,note:"Over 3,500 animals across 100 acres in Balboa Park. The giant panda exhibits make this one of the most visited zoos on Earth. Plan 4–6 hours, book tickets in advance, and bring sunscreen.",cell:"good"},
 
   // === COSTCO GAS ===
-  {id:"costco-gas-redding",name:"Costco Gas — Redding",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Redding",lat:40.609,lng:-122.354,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
-  {id:"costco-gas-woodland",name:"Costco Gas — Woodland",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Woodland",lat:38.692,lng:-121.717,side:"west",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
-  {id:"costco-gas-burbank",name:"Costco Gas — Burbank",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Burbank",lat:34.187,lng:-118.317,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
-  {id:"costco-gas-commerce",name:"Costco Gas — Commerce",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Commerce",lat:33.999,lng:-118.132,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
-  {id:"costco-gas-tustin",name:"Costco Gas — Tustin",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Tustin",lat:33.731,lng:-117.782,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
-  {id:"costco-gas-irvine",name:"Costco Gas — Irvine",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Irvine",lat:33.665,lng:-117.743,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
-  {id:"costco-gas-laguna-niguel",name:"Costco Gas — Laguna Niguel",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Laguna Niguel",lat:33.561,lng:-117.659,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
-  {id:"costco-gas-san-juan-capistrano",name:"Costco Gas — San Juan Capistrano",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"San Juan Capistrano",lat:33.476,lng:-117.678,side:"west",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
-  {id:"costco-gas-carlsbad",name:"Costco Gas — Carlsbad",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Carlsbad",lat:33.127,lng:-117.272,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
-  {id:"costco-gas-san-diego",name:"Costco Gas — San Diego",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"San Diego",lat:32.825,lng:-117.192,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
-  {id:"costco-gas-chula-vista",name:"Costco Gas — Chula Vista",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Chula Vista",lat:32.609,lng:-117.073,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-redding",name:"Costco Gas",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Redding",lat:40.609,lng:-122.354,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-woodland",name:"Costco Gas",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Woodland",lat:38.692,lng:-121.717,side:"west",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-burbank",name:"Costco Gas",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Burbank",lat:34.187,lng:-118.317,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-commerce",name:"Costco Gas",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Commerce",lat:33.999,lng:-118.132,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-tustin",name:"Costco Gas",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Tustin",lat:33.731,lng:-117.782,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-irvine",name:"Costco Gas",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Irvine",lat:33.665,lng:-117.743,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-laguna-niguel",name:"Costco Gas",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Laguna Niguel",lat:33.561,lng:-117.659,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-san-juan-capistrano",name:"Costco Gas",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"San Juan Capistrano",lat:33.476,lng:-117.678,side:"west",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-carlsbad",name:"Costco Gas",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Carlsbad",lat:33.127,lng:-117.272,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-san-diego",name:"Costco Gas",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"San Diego",lat:32.825,lng:-117.192,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-chula-vista",name:"Costco Gas",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Chula Vista",lat:32.609,lng:-117.073,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
 ];
 
 const MILE_MIN=0,MILE_MAX=Math.round(I5_LINE_LEN),PAD=50;
@@ -456,6 +460,7 @@ function updateCountyDisplay(){
 let dir='north';
 let favs=JSON.parse(localStorage.getItem('i5_fav')||'[]');
 let favFilter=false;
+let hideGas=false;
 let navApp=localStorage.getItem('i5_nav')||'google';
 let gpsActive=false,gpsMile=null,gpsLat=null,gpsLng=null;
 let gpsWatchId=null,lastGpsHeadings=[],autoDir=false;
@@ -665,6 +670,23 @@ function applyFavFilter(){
   });
 }
 
+function isGasStation(id){
+  return id&&(id.startsWith('loves-')||id.startsWith('costco-gas-'));
+}
+
+function applyGasFilter(){
+  document.querySelectorAll('[data-poi-id]').forEach(el=>{
+    if(isGasStation(el.dataset.poiId))el.style.display=hideGas?'none':'';
+  });
+}
+
+function toggleHideGas(){
+  hideGas=!hideGas;
+  const opt=document.getElementById('hideGasOpt');
+  if(opt)opt.classList.toggle('selected',hideGas);
+  applyGasFilter();
+}
+
 function render(){
   const inner=document.getElementById('corridorInner');
   const h=totalH();
@@ -744,10 +766,12 @@ function render(){
       // Dot at exact geographic mile position
       const dot=document.createElement('div');
       dot.className='dot';dot.style.top=c.y+'px';
+      dot.dataset.poiId=c.poi.id;
       inner.appendChild(dot);
       // Horizontal connector at card vertical midpoint
       const conn=document.createElement('div');
       conn.className=`conn ${side}`;conn.style.top=(cardMidY-1)+'px';
+      conn.dataset.poiId=c.poi.id;
       inner.appendChild(conn);
       // Vertical tail bridging dot to connector when card has floated
       const tailH=Math.abs(c.y-cardMidY);
@@ -756,6 +780,7 @@ function render(){
         tail.className='tail';
         tail.style.top=Math.min(c.y,cardMidY)+'px';
         tail.style.height=tailH+'px';
+        tail.dataset.poiId=c.poi.id;
         inner.appendChild(tail);
       }
       cardPositions.push({poi:c.poi,yTop:c.top,yBot:c.bot,cardEl:c.cardEl});
@@ -769,8 +794,8 @@ function render(){
   setTimeout(()=>{corridor.scrollTop=dir==='north'?corridor.scrollHeight:0},50);
   // Re-place GPS marker if active
   if(gpsActive&&gpsMile!==null)setTimeout(()=>placeGpsMarker(gpsMile),60);
-  // Re-apply fav filter if active
-  setTimeout(applyFavFilter,70);
+  // Re-apply fav filter and gas filter if active
+  setTimeout(()=>{applyFavFilter();applyGasFilter();},70);
 }
 
 function addGapLabel(parent,h,mileA,mileB){
