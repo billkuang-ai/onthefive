@@ -1,5 +1,5 @@
 // I-5 California Corridor — Service Worker
-const CACHE = 'i5-v1';
+const CACHE = 'i5-v2';
 const ASSETS = [
   './',
   './index.html',
