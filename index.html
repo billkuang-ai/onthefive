@@ -494,7 +494,7 @@ function onGpsSuccess(pos){
     lastGpsHeadings.push(heading);
     if(lastGpsHeadings.length>5)lastGpsHeadings.shift();
     const avgH=lastGpsHeadings.reduce((a,b)=>a+b,0)/lastGpsHeadings.length;
-    const detected=avgH<180||avgH>=340?'north':'south';
+    const detected=avgH<90||avgH>=270?'north':'south';
     if(!autoDir||detected!==dir){
       autoDir=true;
       setDir(detected,false);
@@ -553,8 +553,10 @@ function removeGpsMarker(){
 
 // Auto-scroll: keep GPS dot in upper third of viewport while driving
 let lastAutoScroll=0;
+let lastUserInteraction=0;
 function autoScrollToGps(mile){
   const now=Date.now();
+  if(now-lastUserInteraction<5000)return; // don't interrupt active scrolling
   if(now-lastAutoScroll<4000)return; // throttle: max once per 4s
   const corridor=document.getElementById('corridor');
   const h=totalH();
@@ -938,6 +940,9 @@ function clearSaved(){
   }
 }
 
+// Track user touch to suppress auto-scroll while actively scrolling
+document.getElementById('corridor').addEventListener('touchstart',()=>{lastUserInteraction=Date.now();},{passive:true});
+
 // Scroll handler — progress bar + pill update
 let scrollTick=false;
 document.getElementById('corridor').addEventListener('scroll',function(){
@@ -961,6 +966,44 @@ setInterval(()=>{
     btn.textContent=gpsWatchId!==null&&!gpsActive?'… GPS':gpsActive?'✓ GPS ON':'• GPS OFF';
   }
 },500);
+// ===== APPLE TOUCH ICON (iOS home screen) =====
+// iOS ignores SVG manifest icons — generate shield PNG via canvas at runtime
+(function(){
+  try{
+    const cv=document.createElement('canvas');
+    cv.width=180;cv.height=180;
+    const ctx=cv.getContext('2d');
+    // Background
+    ctx.fillStyle='#0A1628';ctx.fillRect(0,0,180,180);
+    // Shield rounded rect (arcTo for broad compatibility)
+    const x=16,y=16,w=148,h=148,r=16;
+    function rrect(){
+      ctx.beginPath();
+      ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);
+      ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+      ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);
+      ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);
+      ctx.closePath();
+    }
+    rrect();ctx.fillStyle='#1B3D8C';ctx.fill();
+    ctx.strokeStyle='white';ctx.lineWidth=5;ctx.stroke();
+    // Red top bar (clipped to shield)
+    ctx.save();rrect();ctx.clip();
+    ctx.fillStyle='#BE1E2D';ctx.fillRect(x,y,w,44);
+    ctx.restore();
+    // Text
+    ctx.fillStyle='white';ctx.textAlign='center';ctx.textBaseline='alphabetic';
+    ctx.font='900 15px "Arial Black",Arial,sans-serif';
+    ctx.fillText('INTERSTATE',90,52);
+    ctx.font='900 84px "Arial Black",Arial,sans-serif';
+    ctx.fillText('5',90,148);
+    // Inject as apple-touch-icon
+    const lnk=document.createElement('link');
+    lnk.rel='apple-touch-icon';lnk.href=cv.toDataURL('image/png');
+    document.head.appendChild(lnk);
+  }catch(e){}
+})();
+
 // ===== SERVICE WORKER =====
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
