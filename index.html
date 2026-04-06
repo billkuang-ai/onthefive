@@ -179,6 +179,11 @@ body{font-family:var(--font);background:var(--bg-deep);color:var(--white);min-he
 .settings-divider{display:flex;align-items:center;gap:10px;margin:20px 0 14px}
 .settings-divider span{font-size:11px;font-weight:800;letter-spacing:1.5px;color:var(--red);white-space:nowrap;opacity:.7}
 .settings-divider::before,.settings-divider::after{content:'';flex:1;height:1px;background:var(--red);opacity:.25}
+.nav-picker{display:flex;gap:6px;margin-bottom:8px}
+.nav-opt{flex:1;padding:10px 4px;border:1.5px solid var(--blue-shield);border-radius:4px;font-family:var(--font);font-size:var(--t-body);color:var(--blue-light);font-weight:700;background:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .15s;-webkit-appearance:none;outline:none}
+.nav-opt:active{background:var(--blue-shield)}
+.nav-opt.selected{border-color:var(--green);color:var(--white);background:rgba(34,197,94,.08)}
+.settings-sublabel{font-size:11px;font-weight:800;letter-spacing:.8px;color:var(--blue-light);opacity:.6;margin-bottom:6px}
 .settings-clear{width:100%;display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:1.5px solid rgba(190,30,45,.4);border-radius:4px;cursor:pointer;font-size:var(--t-body);color:var(--red);font-weight:700;background:transparent;font-family:var(--font);-webkit-tap-highlight-color:transparent;transition:all .2s;-webkit-appearance:none;outline:none}
 .settings-clear:active{background:rgba(190,30,45,.1)}
 .settings-clear.confirm{border-color:var(--red);background:rgba(190,30,45,.15);color:var(--white)}
@@ -223,25 +228,20 @@ body{font-family:var(--font);background:var(--bg-deep);color:var(--white);min-he
 
 <div class="settings-overlay" id="settingsOverlay" onclick="closeSettings()">
   <div class="settings-sheet" onclick="event.stopPropagation()">
-    <div class="settings-title">NAVIGATION APP</div>
-    <div class="settings-opt" id="opt-google" onclick="setNavApp('google')">
-      <span>🗺️ Google Maps</span><span class="check">✓</span>
+    <div class="settings-title">MAP OPTIONS</div>
+    <div class="settings-sublabel">NAVIGATION APP</div>
+    <div class="nav-picker">
+      <button class="nav-opt" id="nav-google" onclick="setNavApp('google')">🗺️ Google</button>
+      <button class="nav-opt" id="nav-apple" onclick="setNavApp('apple')">🍎 Apple</button>
+      <button class="nav-opt" id="nav-waze" onclick="setNavApp('waze')">🚗 Waze</button>
     </div>
-    <div class="settings-opt" id="opt-apple" onclick="setNavApp('apple')">
-      <span>🍎 Apple Maps</span><span class="check">✓</span>
-    </div>
-    <div class="settings-opt" id="opt-waze" onclick="setNavApp('waze')">
-      <span>🚗 Waze</span><span class="check">✓</span>
-    </div>
-    <div class="settings-title" style="margin-top:20px">SAVED STOPS</div>
-    <div class="settings-opt" id="favFilterOpt" onclick="toggleFavFilter()">
-      <span>⭐️ Show Saved Stops Only</span><span class="check">✓</span>
-    </div>
-    <div class="settings-title" style="margin-top:20px">MAP OPTIONS</div>
     <div class="settings-opt" id="hideGasOpt" onclick="toggleHideGas()">
       <span>⛽️ Hide Gas Stations</span><span class="check">✓</span>
     </div>
-    <button class="settings-clear" id="clearSavedBtn" onclick="clearSaved()" style="margin-top:20px">
+    <div class="settings-opt" id="favFilterOpt" onclick="toggleFavFilter()">
+      <span>⭐️ Only Show Saved Stops</span><span class="check">✓</span>
+    </div>
+    <button class="settings-clear" id="clearSavedBtn" onclick="clearSaved()" style="margin-top:8px">
       <span id="clearSavedLabel">🗑️ Clear All Saved Stops</span><span id="clearSavedHint" style="font-size:11px;opacity:.7"></span>
     </button>
   </div>
@@ -943,7 +943,7 @@ function setNavApp(app){
 
 function updateSettingsUI(){
   ['google','apple','waze'].forEach(a=>{
-    const el=document.getElementById(`opt-${a}`);
+    const el=document.getElementById(`nav-${a}`);
     if(el)el.classList.toggle('selected',navApp===a);
   });
 }
