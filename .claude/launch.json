@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Static Dev Server",
+      "runtimeExecutable": "ruby",
+      "runtimeArgs": ["-run", "-e", "httpd", "/Users/Bill/Documents/dev/onthefive", "-p", "8080"],
+      "port": 8080
+    }
+  ]
+}
