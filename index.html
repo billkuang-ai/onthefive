@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="I-5">
+<meta name="apple-mobile-web-app-title" content="On the Five">
 <meta name="theme-color" content="#0A1628">
 <link rel="manifest" href="manifest.json">
 <title>I-5 California Corridor</title>
@@ -216,7 +216,6 @@ body{font-family:var(--font);background:var(--bg-deep);color:var(--white);min-he
 
   <div class="sbar">
     <span class="sbar-county" id="sbarCounty">—</span>
-    <button class="fav-filter" id="favFilterBtn" onclick="toggleFavFilter()">★ Saved</button>
     <button class="gps-toggle" id="gpsBtn" onclick="toggleGPS()">• GPS OFF</button>
     <button class="settings-btn" onclick="openSettings()">⚙️</button>
   </div>
@@ -234,7 +233,10 @@ body{font-family:var(--font);background:var(--bg-deep);color:var(--white);min-he
     <div class="settings-opt" id="opt-waze" onclick="setNavApp('waze')">
       <span>🚗 Waze</span><span class="check">✓</span>
     </div>
-    <div class="settings-divider"><span>DANGER ZONE</span></div>
+    <div class="settings-divider"><span>SAVED STOPS</span></div>
+    <div class="settings-opt" id="favFilterOpt" onclick="toggleFavFilter()">
+      <span>★ Show Saved Stops Only</span><span class="check">✓</span>
+    </div>
     <button class="settings-clear" id="clearSavedBtn" onclick="clearSaved()">
       <span id="clearSavedLabel">🗑️ Clear All Saved Stops</span><span id="clearSavedHint" style="font-size:11px;opacity:.7"></span>
     </button>
@@ -350,6 +352,19 @@ const POIS=[
   {id:"carlsbad-premium-outlets",name:"Carlsbad Premium Outlets",tagline:"150 brand-name stores just north of San Diego",town:"Carlsbad",lat:33.126,lng:-117.321,side:"east",tags:["shopping"],kid:true,pet:false,ada:true,rv:false,note:"5620 Paseo Del Norte. Simon's flagship California outlet with 150+ stores and an easy I-5 exit. Right next to LEGOLAND — combine both stops for a full Carlsbad afternoon.",cell:"good"},
   {id:"legoland",name:"LEGOLAND California",tagline:"A theme park built from 60 million LEGO bricks",town:"Carlsbad",lat:33.126,lng:-117.310,side:"east",tags:["kids","iconic"],kid:true,pet:false,ada:true,rv:false,note:"Carlsbad's crown jewel for families with young kids. 60+ rides built around LEGO themes, plus a waterpark and SEA LIFE Aquarium next door. Plan a full day — it's bigger than it looks from I-5.",cell:"good"},
   {id:"san-diego-zoo",name:"San Diego Zoo",tagline:"Consistently one of the best zoos in the world",town:"San Diego",lat:32.735,lng:-117.149,side:"east",tags:["kids","iconic","scenic","detour"],kid:true,pet:false,ada:true,rv:false,note:"Over 3,500 animals across 100 acres in Balboa Park. The giant panda exhibits make this one of the most visited zoos on Earth. Plan 4–6 hours, book tickets in advance, and bring sunscreen.",cell:"good"},
+
+  // === COSTCO GAS ===
+  {id:"costco-gas-redding",name:"Costco Gas — Redding",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Redding",lat:40.609,lng:-122.354,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-woodland",name:"Costco Gas — Woodland",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Woodland",lat:38.692,lng:-121.717,side:"west",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-burbank",name:"Costco Gas — Burbank",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Burbank",lat:34.187,lng:-118.317,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-commerce",name:"Costco Gas — Commerce",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Commerce",lat:33.999,lng:-118.132,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-tustin",name:"Costco Gas — Tustin",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Tustin",lat:33.731,lng:-117.782,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-irvine",name:"Costco Gas — Irvine",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Irvine",lat:33.665,lng:-117.743,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-laguna-niguel",name:"Costco Gas — Laguna Niguel",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Laguna Niguel",lat:33.561,lng:-117.659,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-san-juan-capistrano",name:"Costco Gas — San Juan Capistrano",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"San Juan Capistrano",lat:33.476,lng:-117.678,side:"west",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-carlsbad",name:"Costco Gas — Carlsbad",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Carlsbad",lat:33.127,lng:-117.272,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-san-diego",name:"Costco Gas — San Diego",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"San Diego",lat:32.825,lng:-117.192,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
+  {id:"costco-gas-chula-vista",name:"Costco Gas — Chula Vista",tagline:"Cheapest gas on I-5 and the legendary $1.50 hot dog",town:"Chula Vista",lat:32.609,lng:-117.073,side:"east",tags:["fuel","food","iconic"],kid:true,pet:false,ada:true,rv:true,note:"Members only. Consistently the cheapest ⛽️ on the corridor — often 20+ cents below the next station. Fill the tank first, then head inside: the $1.50 🌭 hot dog + soda and $1.99 🍕 pizza slice have not changed in price since the Reagan administration. If you have the card, this stop pays for itself.",cell:"good"},
 ];
 
 const MILE_MIN=0,MILE_MAX=Math.round(I5_LINE_LEN),PAD=50;
@@ -634,8 +649,8 @@ function toggleFav(id){
 
 function toggleFavFilter(){
   favFilter=!favFilter;
-  const btn=document.getElementById('favFilterBtn');
-  if(btn)btn.classList.toggle('on',favFilter);
+  const opt=document.getElementById('favFilterOpt');
+  if(opt)opt.classList.toggle('selected',favFilter);
   applyFavFilter();
 }
 
@@ -920,7 +935,7 @@ function clearSaved(){
     localStorage.removeItem('i5_fav');
     applyFavFilter();
     // If filter was on, turn it off since nothing is saved
-    if(favFilter){favFilter=false;const fb=document.getElementById('favFilterBtn');if(fb)fb.classList.remove('on');applyFavFilter();}
+    if(favFilter){favFilter=false;const fo=document.getElementById('favFilterOpt');if(fo)fo.classList.remove('selected');applyFavFilter();}
     btn.classList.remove('confirm');
     label.textContent='✓ Cleared';
     hint.textContent='';
