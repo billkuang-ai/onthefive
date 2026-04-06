@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "Static Dev Server",
-      "runtimeExecutable": "ruby",
-      "runtimeArgs": ["-run", "-e", "httpd", "/Users/Bill/Documents/dev/onthefive", "-p", "8080"],
+      "runtimeExecutable": "sleep",
+      "runtimeArgs": ["99999"],
       "port": 8080
     }
   ]
