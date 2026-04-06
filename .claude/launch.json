@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "Static Dev Server",
-      "runtimeExecutable": "npx",
+      "runtimeExecutable": "/usr/local/bin/npx",
       "runtimeArgs": ["serve", "/Users/Bill/Documents/dev/onthefive", "-p", "8080", "-n"],
       "port": 8080
     }
