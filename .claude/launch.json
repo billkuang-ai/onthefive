@@ -4,7 +4,7 @@
     {
       "name": "Static Dev Server",
       "runtimeExecutable": "ruby",
-      "runtimeArgs": ["-run", "-e", "httpd", "/Users/Bill/Documents/dev/onthefive", "-p", "8080"],
+      "runtimeArgs": ["-run", "-e", "httpd", "/tmp/onthefive", "-p", "8080"],
       "port": 8080
     }
   ]
