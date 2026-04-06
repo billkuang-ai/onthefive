@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "Static Dev Server",
-      "runtimeExecutable": "/opt/homebrew/bin/node",
-      "runtimeArgs": ["-e", "require('http').createServer((q,r)=>{require('fs').readFile(require('path').join('/Users/Bill/Documents/dev/onthefive',q.url==='/'?'index.html':q.url),(e,d)=>e?r.writeHead(404)&&r.end():r.end(d))}).listen(8080)"],
+      "runtimeExecutable": "ruby",
+      "runtimeArgs": ["-run", "-e", "httpd", "/Users/Bill/Downloads/onthefive", "-p", "8080"],
       "port": 8080
     }
   ]
